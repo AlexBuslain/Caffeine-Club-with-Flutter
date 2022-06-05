@@ -5,6 +5,8 @@ import 'package:caffeine_club/config/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:caffeine_club/widgets/widgets.dart';
 
+import '../models/post_model.dart';
+
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,18 @@ class HomeScreen extends StatelessWidget {
                 ), // Ajout du boutons sur la droite de la Top Bar
               ),
             ]),
-        SliverToBoxAdapter(child: CreatePostContainer(currentUser: currentUser))
+        SliverToBoxAdapter(
+            child: CreatePostContainer(currentUser: currentUser)),
+        SliverList(
+          // Feed des publications des utilisateurs.
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              final Post post = posts[index];
+              return PostContainer(post: post);
+            },
+            childCount: posts.length,
+          ),
+        ),
       ],
     ));
   }
